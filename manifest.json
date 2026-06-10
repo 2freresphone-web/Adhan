@@ -1,0 +1,37 @@
+{
+  "name": "Adhan DZ - Horaires de Prière en Algérie",
+  "short_name": "Adhan DZ",
+  "description": "Application pour consulter les horaires de prière à travers l'Algérie avec notifications et son d'Adhan",
+  "start_url": "./adhan_dz_ameliore.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#1a472a",
+  "background_color": "#051a0f",
+  "categories": ["utilities", "productivity", "religion"],
+  "lang": "fr-DZ",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48cmVjdCBmaWxsPSIjMWE0NzJhIiB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIvPjxjaXJjbGUgY3g9Ijk2IiBjeT0iNjAiIHI9IjMwIiBmaWxsPSIjZDRhZjM3Ii8+PHBvbHlnb24gcG9pbnRzPSI5Niw5MCAxMjAsMTQwIDcyLDE0MCIgZmlsbD0iI2Q0YWYzNyIvPjxyZWN0IHg9IjQwIiB5PSIxMjAiIHdpZHRoPSIyMjQiIGhlaWdodD0iNDgiIGZpbGw9IiMwZDNkMjIiLz48L3N2Zz4=",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCBmaWxsPSIjMWE0NzJhIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjE1MCIgcj0iOTAiIGZpbGw9IiNkNGFmMzciLz48cG9seWdvbiBwb2ludHM9IjI1NiwyNTAgMzQwLDQyMCAxNzIsNDIwIiBmaWxsPSIjZDRhZjM3Ii8+PHJlY3QgeD0iODAiIHk9IjM1MCIgd2lkdGg9IjM1MiIgaGVpZ2h0PSIxNDIiIGZpbGw9IiMwZDNkMjIiLz48L3N2Zz4=",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1NDAgNzIwIj48cmVjdCBmaWxsPSIjMWE0NzJhIiB3aWR0aD0iNTQwIiBoZWlnaHQ9IjcyMCIvPjx0ZXh0IHg9IjI3MCIgeT0iMTAwIiBmb250LXNpemU9IjYwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZDRhZjM3IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtd2VpZ2h0PSJib2xkIj5BZGhhbiBEWjwvdGV4dD48dGV4dCB4PSIyNzAiIHk9IjIwMCIgZm9udC1zaXplPSI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCI+SG9yYWlyZXMgZGUgUHLDqWVyZTwvdGV4dD48L3N2Zz4=",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ]
+}
