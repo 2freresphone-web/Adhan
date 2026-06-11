@@ -3,40 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1a472a">
-<meta name="description" content="Horaires de prière en Algérie avec notifications en temps réel">
+<meta name="theme-color" content="#228c52">
+<meta name="description" content="Horaires de prière en Algérie avec notifications">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Adhan DZ">
-<meta name="apple-mobile-web-app-icon-path" content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231a472a' width='180' height='180'/><text x='90' y='120' font-size='90' text-anchor='middle' fill='%23d4af37' font-family='Arial' font-weight='bold'>🕌</text></svg>">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231a472a' width='100' height='100'/><text x='50' y='75' font-size='50' text-anchor='middle' fill='%23d4af37' font-family='Arial'>🕌</text></svg>">
-
-<title>Adhan DZ - Horaires de Prière</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23228c52' width='100' height='100'/><text x='50' y='75' font-size='50' text-anchor='middle' fill='%23FFD700'>🕌</text></svg>">
+<title>Adhan DZ</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
-    width: 100%;
-    height: 100%;
-}
-
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; }
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
     background: linear-gradient(135deg, rgba(10, 80, 40, 0.75) 0%, rgba(5, 50, 25, 0.75) 100%),
                 url('https://images.unsplash.com/photo-1609524586309-30e7ec41c15d?q=80&w=2000') center/cover no-repeat fixed;
     background-attachment: fixed;
-    background-size: cover;
     min-height: 100vh;
     padding: 20px;
     padding-bottom: 30px;
-    position: relative;
 }
 
 .overlay {
@@ -47,12 +34,8 @@ body {
     backdrop-filter: blur(2px);
 }
 
-.container {
-    max-width: 500px;
-    margin: 0 auto;
-}
+.container { max-width: 500px; margin: 0 auto; }
 
-/* Header */
 .header {
     text-align: center;
     margin-bottom: 30px;
@@ -83,34 +66,6 @@ h1 {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Bouton installer PWA */
-#install-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%);
-    color: #1a472a;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 50px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
-    transition: all 0.3s ease;
-    display: none;
-    z-index: 100;
-}
-
-#install-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
-}
-
-#install-btn:active {
-    transform: scale(0.95);
-}
-
-/* Sélecteur de ville */
 select {
     width: 100%;
     padding: 12px;
@@ -119,23 +74,15 @@ select {
     background: rgba(0, 0, 0, 0.5);
     color: white;
     font-size: 1em;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(5px);
 }
 
-select:hover {
-    background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-}
+select:hover { background: rgba(0, 0, 0, 0.6); }
+select option { background: #1a472a; color: white; }
 
-select option {
-    background: #1a472a;
-    color: white;
-}
-
-/* Contrôles */
 .controls-section {
     display: flex;
     flex-direction: column;
@@ -143,7 +90,7 @@ select option {
     margin-bottom: 20px;
 }
 
-.notification-control, .sound-control {
+.control-item {
     display: flex;
     gap: 10px;
     align-items: center;
@@ -151,18 +98,17 @@ select option {
     padding: 12px;
     border-radius: 10px;
     border: 2px solid rgba(255, 215, 0, 0.5);
-    transition: all 0.3s ease;
     backdrop-filter: blur(5px);
 }
 
-.notification-toggle {
+.toggle {
     position: relative;
     display: inline-block;
     width: 50px;
     height: 26px;
 }
 
-.notification-toggle input {
+.toggle input {
     opacity: 0;
     width: 0;
     height: 0;
@@ -200,64 +146,34 @@ input:checked + .slider:before {
     transform: translateX(24px);
 }
 
-.notification-label {
+.label-text {
     flex: 1;
     font-size: 0.95em;
     display: flex;
     flex-direction: column;
 }
 
-.notification-status {
+.status {
     font-size: 0.85em;
     opacity: 0.7;
     margin-top: 3px;
 }
 
-.status-granted {
-    color: #90EE90;
-}
-
-.status-denied {
-    color: #ff7a7a;
-}
-
-/* Prochaine prière */
 .next-prayer-card {
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.95) 0%, rgba(201, 162, 39, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.95) 0%, rgba(255, 199, 0, 0.95) 100%);
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 25px;
     text-align: center;
     color: #1a472a;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.4);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-.next-prayer-card h3 {
-    font-size: 1.2em;
-    margin-bottom: 8px;
-    opacity: 0.8;
-}
+.next-prayer-card h3 { font-size: 1.2em; margin-bottom: 8px; opacity: 0.8; }
+.prayer-name { font-size: 2.5em; font-weight: bold; margin: 10px 0; }
+.prayer-time { font-size: 1.8em; margin: 8px 0; font-weight: 600; }
+.countdown { font-size: 1em; margin-top: 10px; opacity: 0.9; }
 
-.prayer-name {
-    font-size: 2.5em;
-    font-weight: bold;
-    margin: 10px 0;
-}
-
-.prayer-time {
-    font-size: 1.8em;
-    margin: 8px 0;
-    font-weight: 600;
-}
-
-.countdown {
-    font-size: 1em;
-    margin-top: 10px;
-    opacity: 0.9;
-}
-
-/* Grille des prières */
 .prayers-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -268,7 +184,7 @@ input:checked + .slider:before {
 
 .prayer-card {
     background: rgba(0, 0, 0, 0.3);
-    border: 2px solid rgba(212, 175, 55, 0.4);
+    border: 2px solid rgba(255, 215, 0, 0.4);
     padding: 15px;
     border-radius: 12px;
     transition: all 0.3s ease;
@@ -278,26 +194,20 @@ input:checked + .slider:before {
 }
 
 .prayer-card:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(212, 175, 55, 0.6);
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 215, 0, 0.7);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
 }
 
 .prayer-card.active {
-    background: rgba(212, 175, 55, 0.2);
+    background: rgba(255, 215, 0, 0.2);
     border-color: #FFD700;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
 }
 
 .prayer-card.completed {
     background: rgba(144, 238, 144, 0.15);
     border-color: rgba(144, 238, 144, 0.5);
-}
-
-.prayer-card.completed .prayer-time-card {
-    color: #90EE90;
-    text-decoration: line-through;
 }
 
 .prayer-checkbox {
@@ -310,32 +220,10 @@ input:checked + .slider:before {
     accent-color: #FFD700;
 }
 
-.prayer-icon {
-    font-size: 2em;
-    margin-bottom: 8px;
-    margin-top: 15px;
-}
-
-.prayer-name-card {
-    font-weight: 600;
-    font-size: 1.1em;
-    margin-bottom: 8px;
-    opacity: 0.9;
-}
-
-.prayer-time-card {
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #FFD700;
-    transition: all 0.3s ease;
-}
-
-/* Messages */
-.loading {
-    text-align: center;
-    padding: 20px;
-    opacity: 0.8;
-}
+.prayer-icon { font-size: 2em; margin-bottom: 8px; margin-top: 15px; }
+.prayer-name { font-weight: 600; font-size: 1.1em; margin-bottom: 8px; opacity: 0.9; }
+.prayer-time { font-size: 1.3em; font-weight: bold; color: #FFD700; }
+.prayer-card.completed .prayer-time { color: #90EE90; text-decoration: line-through; }
 
 .error {
     background: rgba(220, 53, 69, 0.2);
@@ -347,105 +235,57 @@ input:checked + .slider:before {
     margin: 20px 0;
 }
 
-.success {
-    background: rgba(144, 238, 144, 0.2);
-    border: 2px solid #90EE90;
-    color: #90EE90;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    margin: 20px 0;
-    animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Toast notifications */
 .toast {
     position: fixed;
     bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(212, 175, 55, 0.95);
+    background: rgba(255, 215, 0, 0.95);
     color: #1a472a;
     padding: 15px 25px;
     border-radius: 50px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     font-weight: bold;
     z-index: 1000;
-    animation: toastSlide 0.3s ease;
+    animation: slideIn 0.3s ease;
 }
 
-@keyframes toastSlide {
-    from {
-        opacity: 0;
-        transform: translate(-50%, 20px);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-    }
+@keyframes slideIn {
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* Responsive */
+#install-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%);
+    color: #1a472a;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    transition: all 0.3s ease;
+    display: none;
+    z-index: 100;
+}
+
+#install-btn:hover { transform: scale(1.05); }
+#install-btn:active { transform: scale(0.95); }
+
 @media (max-width: 600px) {
-    body {
-        padding: 10px;
-        padding-bottom: 80px;
-    }
-
-    .overlay {
-        padding: 10px;
-        border-radius: 15px;
-    }
-
-    h1 {
-        font-size: 2em;
-    }
-
-    .prayers-grid {
-        grid-template-columns: 1fr;
-        margin-bottom: 100px;
-    }
-
-    .prayer-card {
-        padding: 12px;
-    }
-
-    .date-time {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .next-prayer-card {
-        padding: 15px;
-    }
-
-    .notification-control {
-        flex-direction: column;
-    }
-
-    #install-btn {
-        bottom: 15px;
-        right: 15px;
-        padding: 10px 15px;
-        font-size: 0.9em;
-    }
+    body { padding: 10px; padding-bottom: 80px; }
+    .overlay { padding: 10px; border-radius: 15px; }
+    h1 { font-size: 2em; }
+    .prayers-grid { grid-template-columns: 1fr; margin-bottom: 100px; }
+    .prayer-card { padding: 12px; }
+    .date-time { flex-direction: column; gap: 10px; }
 }
 
 @media (display-mode: standalone) {
-    #install-btn {
-        display: none !important;
-    }
+    #install-btn { display: none !important; }
 }
 </style>
 </head>
@@ -486,37 +326,26 @@ input:checked + .slider:before {
 </select>
 
 <div class="controls-section">
-    <div class="notification-control">
-        <label class="notification-toggle">
+    <div class="control-item">
+        <label class="toggle">
             <input type="checkbox" id="notif-toggle" />
             <span class="slider"></span>
         </label>
-        <div class="notification-label">
+        <div class="label-text">
             <span>🔔 Notifications</span>
-            <span class="notification-status" id="notif-status">Cliquez pour activer</span>
+            <span class="status" id="notif-status">Activez pour recevoir les alertes</span>
         </div>
     </div>
 
-    <div class="sound-control">
-        <label class="notification-toggle">
+    <div class="control-item">
+        <label class="toggle">
             <input type="checkbox" id="sound-toggle" checked />
             <span class="slider"></span>
         </label>
-        <div class="notification-label">
+        <div class="label-text">
             <span>🎵 Son d'Adhan</span>
-            <span class="notification-status" id="sound-status">Activé</span>
+            <span class="status" id="sound-status">✓ Activé</span>
         </div>
-    </div>
-
-    <div style="display: flex; gap: 10px; margin-top: 10px;">
-        <button id="test-adhan-btn" style="flex: 1; padding: 10px; background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%); border: none; border-radius: 8px; color: #1a472a; font-weight: bold; cursor: pointer; transition: all 0.3s ease;">
-            🎧 Écouter l'Adhan
-        </button>
-        <select id="adhan-select" style="flex: 1; padding: 10px; background: rgba(0, 0, 0, 0.5); border: 2px solid #FFD700; border-radius: 8px; color: white; cursor: pointer;">
-            <option value="default">Adhan Traditionnel</option>
-            <option value="melodic">Adhan Mélodique</option>
-            <option value="fast">Adhan Rapide</option>
-        </select>
     </div>
 </div>
 
@@ -533,32 +362,32 @@ input:checked + .slider:before {
     <div class="prayer-card" data-prayer="Fajr">
         <input type="checkbox" class="prayer-checkbox" />
         <div class="prayer-icon">🌅</div>
-        <div class="prayer-name-card">Fajr</div>
-        <div class="prayer-time-card" id="Fajr">--:--</div>
+        <div class="prayer-name">Fajr</div>
+        <div class="prayer-time" id="Fajr">--:--</div>
     </div>
     <div class="prayer-card" data-prayer="Dhuhr">
         <input type="checkbox" class="prayer-checkbox" />
         <div class="prayer-icon">☀️</div>
-        <div class="prayer-name-card">Dhuhr</div>
-        <div class="prayer-time-card" id="Dhuhr">--:--</div>
+        <div class="prayer-name">Dhuhr</div>
+        <div class="prayer-time" id="Dhuhr">--:--</div>
     </div>
     <div class="prayer-card" data-prayer="Asr">
         <input type="checkbox" class="prayer-checkbox" />
         <div class="prayer-icon">🌤️</div>
-        <div class="prayer-name-card">Asr</div>
-        <div class="prayer-time-card" id="Asr">--:--</div>
+        <div class="prayer-name">Asr</div>
+        <div class="prayer-time" id="Asr">--:--</div>
     </div>
     <div class="prayer-card" data-prayer="Maghrib">
         <input type="checkbox" class="prayer-checkbox" />
         <div class="prayer-icon">🌆</div>
-        <div class="prayer-name-card">Maghrib</div>
-        <div class="prayer-time-card" id="Maghrib">--:--</div>
+        <div class="prayer-name">Maghrib</div>
+        <div class="prayer-time" id="Maghrib">--:--</div>
     </div>
     <div class="prayer-card" data-prayer="Isha">
         <input type="checkbox" class="prayer-checkbox" />
         <div class="prayer-icon">🌙</div>
-        <div class="prayer-name-card">Isha</div>
-        <div class="prayer-time-card" id="Isha">--:--</div>
+        <div class="prayer-name">Isha</div>
+        <div class="prayer-time" id="Isha">--:--</div>
     </div>
 </div>
 
@@ -568,33 +397,199 @@ input:checked + .slider:before {
 <button id="install-btn">📲 Installer l'app</button>
 
 <script>
-// ========== CONFIG ==========
-const prayerIcons = {
-    Fajr: '🌅',
-    Dhuhr: '☀️',
-    Asr: '🌤️',
-    Maghrib: '🌆',
-    Isha: '🌙'
-};
+// ========== VARIABLES GLOBALES ==========
+const PRAYER_ORDER = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+const ARABIC_NAMES = { Fajr: 'الفجر', Dhuhr: 'الظهر', Asr: 'العصر', Maghrib: 'المغرب', Isha: 'العشاء' };
 
-const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-const arabicNames = {
-    Fajr: 'الفجر',
-    Dhuhr: 'الظهر',
-    Asr: 'العصر',
-    Maghrib: 'المغرب',
-    Isha: 'العشاء'
-};
-
-let allTimes = {};
+let prayers = {};
 let notificationsEnabled = false;
 let soundEnabled = true;
-let notifiedPrayers = new Set();
+let notifiedToday = new Set();
 let deferredPrompt = null;
-let adhanType = 'default'; // Type d'Adhan sélectionné
 
-// ========== PWA INSTALLATION ==========
-window.addEventListener('beforeinstallprompt', (e) => {
+// ========== UTILITAIRES ==========
+function showToast(msg, duration = 3000) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.animation = 'slideIn 0.3s ease reverse'; }, duration);
+    setTimeout(() => toast.remove(), duration + 300);
+}
+
+function save(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+}
+
+function load(key, defaultValue) {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : defaultValue;
+}
+
+// ========== HORAIRES DE PRIÈRE ==========
+async function loadPrayers() {
+    const city = document.getElementById('city').value;
+    const errorDiv = document.getElementById('error-msg');
+    errorDiv.innerHTML = '';
+
+    try {
+        const response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Algeria&method=19`);
+        if (!response.ok) throw new Error('API error');
+        
+        const data = await response.json();
+        const timings = data.data.timings;
+        
+        prayers = {
+            Fajr: timings.Fajr,
+            Dhuhr: timings.Dhuhr,
+            Asr: timings.Asr,
+            Maghrib: timings.Maghrib,
+            Isha: timings.Isha
+        };
+
+        PRAYER_ORDER.forEach(p => {
+            document.getElementById(p).textContent = prayers[p];
+        });
+
+        notifiedToday.clear();
+        updateCountdown();
+        save('city', city);
+        showToast(`✓ ${city}`);
+
+    } catch (error) {
+        errorDiv.innerHTML = `<div class="error">⚠️ Erreur: ${error.message}</div>`;
+        console.error(error);
+    }
+}
+
+function updateCountdown() {
+    const now = new Date();
+    const currentMin = now.getHours() * 60 + now.getMinutes();
+    
+    let nextPrayer = null;
+    let minDiff = Infinity;
+
+    PRAYER_ORDER.forEach(p => {
+        const [h, m] = prayers[p].split(':').map(Number);
+        const prayerMin = h * 60 + m;
+        const diff = prayerMin - currentMin;
+        if (diff > 0 && diff < minDiff) {
+            minDiff = diff;
+            nextPrayer = p;
+        }
+    });
+
+    if (!nextPrayer) {
+        nextPrayer = 'Fajr';
+        minDiff = 24 * 60 - currentMin + 5 * 60; // Approximation pour demain
+    }
+
+    document.getElementById('next-name').textContent = nextPrayer;
+    document.getElementById('next-time').textContent = prayers[nextPrayer];
+    const hrs = Math.floor(minDiff / 60);
+    const mins = minDiff % 60;
+    document.getElementById('countdown').textContent = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+    document.getElementById('next-prayer').style.display = 'block';
+
+    // Mettre à jour les cartes actives
+    document.querySelectorAll('.prayer-card').forEach(card => card.classList.remove('active'));
+    const card = document.querySelector(`[data-prayer="${nextPrayer}"]`);
+    if (card) card.classList.add('active');
+
+    // Notifier
+    if (minDiff === 0 && !notifiedToday.has(nextPrayer)) {
+        notifiedToday.add(nextPrayer);
+        if (notificationsEnabled) showNotification(nextPrayer);
+        if (soundEnabled) playAdhan();
+    }
+}
+
+// ========== NOTIFICATIONS ==========
+async function requestNotifPermission() {
+    if (!('Notification' in window)) return;
+    if (Notification.permission === 'granted') {
+        notificationsEnabled = true;
+        return;
+    }
+    if (Notification.permission !== 'denied') {
+        const perm = await Notification.requestPermission();
+        notificationsEnabled = perm === 'granted';
+    }
+    save('notificationsEnabled', notificationsEnabled);
+    updateNotifStatus();
+}
+
+function updateNotifStatus() {
+    const status = document.getElementById('notif-status');
+    const toggle = document.getElementById('notif-toggle');
+
+    if (!('Notification' in window)) {
+        status.textContent = 'Non supporté';
+        toggle.disabled = true;
+        return;
+    }
+
+    if (Notification.permission === 'granted') {
+        status.textContent = '✓ Activées';
+        toggle.checked = true;
+        notificationsEnabled = true;
+    } else if (Notification.permission === 'denied') {
+        status.textContent = '✗ Bloquées';
+        toggle.checked = false;
+        toggle.disabled = true;
+        notificationsEnabled = false;
+    } else {
+        status.textContent = 'Activez pour recevoir les alertes';
+        toggle.checked = load('notificationsEnabled', false);
+    }
+}
+
+function showNotification(prayer) {
+    if (Notification.permission !== 'granted') return;
+    new Notification(`${prayer} - ${ARABIC_NAMES[prayer]}`, {
+        icon: '🕌',
+        body: `Hora de rezar: ${prayers[prayer]}`,
+        tag: prayer
+    });
+}
+
+// ========== SON ==========
+function playAdhan() {
+    if (!soundEnabled) return;
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [
+            { f: 392, d: 0.8 }, { f: 440, d: 0.6 }, { f: 392, d: 0.8 }, { f: 349, d: 0.6 },
+            { f: 440, d: 0.8 }, { f: 494, d: 0.8 }, { f: 523, d: 1.0 }, { f: 587, d: 1.2 },
+            { f: 659, d: 1.0 }, { f: 587, d: 0.8 }, { f: 523, d: 1.0 }, { f: 494, d: 0.8 },
+            { f: 440, d: 0.9 }, { f: 392, d: 1.0 }, { f: 349, d: 1.2 }, { f: 329, d: 1.5 }
+        ];
+
+        let t = ctx.currentTime;
+        notes.forEach(n => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.frequency.value = n.f;
+            gain.gain.setValueAtTime(0.3, t);
+            gain.gain.exponentialRampToValueAtTime(0.01, t + n.d);
+            osc.start(t);
+            osc.stop(t + n.d);
+            t += n.d;
+        });
+    } catch (e) { console.log('Son non disponible'); }
+}
+
+// ========== DATE & HEURE ==========
+function updateTime() {
+    const now = new Date();
+    document.getElementById('date').textContent = now.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById('time').textContent = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+}
+
+// ========== PWA ==========
+window.addEventListener('beforeinstallprompt', e => {
     e.preventDefault();
     deferredPrompt = e;
     document.getElementById('install-btn').style.display = 'block';
@@ -604,783 +599,74 @@ document.getElementById('install-btn').addEventListener('click', async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-        showToast('✓ App installée avec succès!');
-    }
+    if (outcome === 'accepted') showToast('✓ App installée!');
     deferredPrompt = null;
     document.getElementById('install-btn').style.display = 'none';
 });
 
-window.addEventListener('appinstalled', () => {
-    showToast('App installée! ✨');
-});
-
-// ========== SERVICE WORKER ==========
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-            .then(registration => {
-                console.log('Service Worker enregistré:', registration);
-                // Vérifier les mises à jour
-                registration.addEventListener('updatefound', () => {
-                    console.log('Mise à jour disponible');
-                    showToast('📲 Mise à jour disponible');
-                });
-            })
-            .catch(error => {
-                console.log('Service Worker erreur:', error);
-            });
+        navigator.serviceWorker.register('sw.js').then(r => {
+            console.log('✓ Service Worker enregistré');
+        }).catch(e => console.log('Service Worker erreur:', e));
     });
-}
-
-// ========== UTILITIES ==========
-function showToast(message, duration = 3000) {
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => {
-        toast.style.animation = 'toastSlide 0.3s ease reverse';
-        setTimeout(() => toast.remove(), 300);
-    }, duration);
-}
-
-function loadSoundState() {
-    const saved = localStorage.getItem('soundEnabled');
-    soundEnabled = saved !== 'false';
-    document.getElementById('sound-toggle').checked = soundEnabled;
-    updateSoundStatus();
-}
-
-function saveSoundState() {
-    localStorage.setItem('soundEnabled', soundEnabled);
-}
-
-function updateSoundStatus() {
-    const statusEl = document.getElementById('sound-status');
-    if (soundEnabled) {
-        statusEl.textContent = '✓ Activé';
-        statusEl.className = 'notification-status status-granted';
-    } else {
-        statusEl.textContent = '✗ Désactivé';
-        statusEl.className = 'notification-status status-denied';
-    }
-}
-
-function playAdhanChant() {
-    if (!soundEnabled) return;
-    
-    try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Mélodie d'Adhan magnifique
-        const notes = [
-            { freq: 523, duration: 0.4 },   // C5
-            { freq: 587, duration: 0.4 },   // D5
-            { freq: 659, duration: 0.4 },   // E5
-            { freq: 784, duration: 0.6 },   // G5
-            { freq: 880, duration: 0.8 },   // A5
-            { freq: 784, duration: 0.4 },   // G5
-            { freq: 659, duration: 0.4 },   // E5
-            { freq: 587, duration: 0.4 },   // D5
-            { freq: 523, duration: 1.0 },   // C5
-        ];
-        
-        let currentTime = audioContext.currentTime;
-        
-        notes.forEach(note => {
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(note.freq, currentTime);
-            
-            gain.gain.setValueAtTime(0.3, currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, currentTime + note.duration * 0.9);
-            
-            osc.start(currentTime);
-            osc.stop(currentTime + note.duration);
-            
-            currentTime += note.duration;
-        });
-    } catch (error) {
-        console.log('Son non disponible');
-    }
-}
-
-function playAdhanChant() {
-    if (!soundEnabled) return;
-    
-    const type = document.getElementById('adhan-select')?.value || adhanType || 'default';
-    
-    switch(type) {
-        case 'melodic':
-            playAdhanMelodicVersion();
-            break;
-        case 'fast':
-            playAdhanFastVersion();
-            break;
-        case 'default':
-        default:
-            playAdhanTraditional();
-    }
-}
-
-// Adhan Traditionnel - Classique et authentique
-function playAdhanTraditional() {
-    if (!soundEnabled) return;
-    
-    try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Adhan traditionnel complet - Appel à la prière authentique
-        // Basé sur l'Adhan de la Grande Mosquée de La Mecque
-        const notes = [
-            // Allahu Akbar x4 (doux et solennel)
-            { freq: 293, duration: 1.2, volume: 0.4 },
-            { freq: 329, duration: 1.0, volume: 0.4 },
-            { freq: 293, duration: 1.2, volume: 0.4 },
-            { freq: 261, duration: 1.0, volume: 0.4 },
-            
-            // Ashadu an la ilaha illallah
-            { freq: 329, duration: 1.0, volume: 0.45 },
-            { freq: 392, duration: 1.2, volume: 0.45 },
-            { freq: 440, duration: 1.5, volume: 0.45 },
-            { freq: 494, duration: 1.8, volume: 0.45 },
-            
-            // Ashadu anna Muhammad rasulullah
-            { freq: 523, duration: 1.5, volume: 0.5 },
-            { freq: 587, duration: 1.2, volume: 0.5 },
-            { freq: 523, duration: 1.5, volume: 0.5 },
-            
-            // Hayya alas salah
-            { freq: 494, duration: 1.0, volume: 0.45 },
-            { freq: 440, duration: 1.0, volume: 0.45 },
-            { freq: 392, duration: 1.2, volume: 0.45 },
-            { freq: 349, duration: 1.5, volume: 0.45 },
-            
-            // Hayya alal falah
-            { freq: 392, duration: 1.0, volume: 0.45 },
-            { freq: 349, duration: 1.2, volume: 0.45 },
-            { freq: 329, duration: 1.5, volume: 0.45 },
-            
-            // Allahu Akbar final
-            { freq: 293, duration: 1.2, volume: 0.4 },
-            { freq: 329, duration: 1.0, volume: 0.4 },
-            { freq: 293, duration: 1.5, volume: 0.4 },
-        ];
-        
-        playAdhanNotes(audioContext, notes);
-        
-    } catch (error) {
-        console.log('Erreur Adhan traditionnel:', error);
-    }
-}
-
-// Adhan Mélodique - Plus musical et varié
-function playAdhanMelodicVersion() {
-    if (!soundEnabled) return;
-    
-    try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Adhan avec variations mélodiques
-        const notes = [
-            { freq: 349, duration: 0.8, volume: 0.45 },
-            { freq: 392, duration: 0.9, volume: 0.45 },
-            { freq: 349, duration: 0.8, volume: 0.45 },
-            
-            { freq: 440, duration: 1.0, volume: 0.5 },
-            { freq: 494, duration: 1.1, volume: 0.5 },
-            { freq: 523, duration: 1.3, volume: 0.5 },
-            { freq: 587, duration: 1.5, volume: 0.5 },
-            
-            { freq: 659, duration: 1.2, volume: 0.52 },
-            { freq: 698, duration: 1.0, volume: 0.52 },
-            { freq: 659, duration: 1.2, volume: 0.52 },
-            { freq: 587, duration: 1.0, volume: 0.52 },
-            
-            { freq: 523, duration: 0.9, volume: 0.5 },
-            { freq: 494, duration: 1.0, volume: 0.5 },
-            { freq: 440, duration: 1.2, volume: 0.5 },
-            { freq: 392, duration: 1.5, volume: 0.5 },
-            
-            { freq: 349, duration: 1.2, volume: 0.45 },
-            { freq: 329, duration: 1.5, volume: 0.45 },
-        ];
-        
-        playAdhanNotes(audioContext, notes);
-        
-    } catch (error) {
-        console.log('Erreur Adhan mélodique:', error);
-    }
-}
-
-// Adhan Rapide - Pour l'Iqama (rappel de prière)
-function playAdhanFastVersion() {
-    if (!soundEnabled) return;
-    
-    try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Iqama - Version plus courte et rapide
-        const notes = [
-            { freq: 392, duration: 0.5, volume: 0.45 },
-            { freq: 440, duration: 0.6, volume: 0.45 },
-            { freq: 392, duration: 0.5, volume: 0.45 },
-            
-            { freq: 494, duration: 0.7, volume: 0.5 },
-            { freq: 523, duration: 0.8, volume: 0.5 },
-            { freq: 587, duration: 0.9, volume: 0.5 },
-            
-            { freq: 659, duration: 0.8, volume: 0.52 },
-            { freq: 587, duration: 0.7, volume: 0.52 },
-            { freq: 523, duration: 0.8, volume: 0.52 },
-            
-            { freq: 494, duration: 0.6, volume: 0.5 },
-            { freq: 440, duration: 0.7, volume: 0.5 },
-            { freq: 392, duration: 0.8, volume: 0.5 },
-            { freq: 349, duration: 1.0, volume: 0.45 },
-        ];
-        
-        playAdhanNotes(audioContext, notes);
-        
-    } catch (error) {
-        console.log('Erreur Adhan rapide:', error);
-    }
-}
-
-// Fonction générique pour jouer les notes d'Adhan avec vibrato
-function playAdhanNotes(audioContext, notes) {
-    let currentTime = audioContext.currentTime;
-    
-    notes.forEach((note) => {
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        const vibrato = audioContext.createOscillator();
-        const vibratoGain = audioContext.createGain();
-        
-        osc.connect(gain);
-        vibrato.connect(vibratoGain);
-        vibratoGain.connect(osc.frequency);
-        gain.connect(audioContext.destination);
-        
-        osc.type = 'sine';
-        vibrato.type = 'sine';
-        vibrato.frequency.setValueAtTime(4.5, currentTime); // Vibrato naturel
-        vibratoGain.gain.setValueAtTime(12, currentTime);
-        
-        osc.frequency.setValueAtTime(note.freq, currentTime);
-        
-        // Envelope authentique
-        const attackTime = note.duration * 0.15;
-        const decayTime = note.duration * 0.2;
-        const releaseTime = note.duration * 0.65;
-        
-        gain.gain.setValueAtTime(0.01, currentTime);
-        gain.gain.linearRampToValueAtTime(note.volume, currentTime + attackTime);
-        gain.gain.exponentialRampToValueAtTime(note.volume * 0.8, currentTime + attackTime + decayTime);
-        gain.gain.exponentialRampToValueAtTime(0.02, currentTime + note.duration);
-        
-        osc.start(currentTime);
-        vibrato.start(currentTime);
-        osc.stop(currentTime + note.duration);
-        vibrato.stop(currentTime + note.duration);
-        
-        currentTime += note.duration;
-    });
-}
-
-function saveCity() {
-    localStorage.setItem('selectedCity', document.getElementById('city').value);
-}
-
-function loadNotificationState() {
-    const saved = localStorage.getItem('notificationsEnabled');
-    
-    if (!('Notification' in window)) {
-        updateNotificationStatus('Non supporté');
-        return;
-    }
-
-    // Si les permissions sont déjà accordées, activer automatiquement
-    if (Notification.permission === 'granted') {
-        notificationsEnabled = true;
-        document.getElementById('notif-toggle').checked = true;
-        localStorage.setItem('notificationsEnabled', 'true');
-    } 
-    // Si refusées, désactiver
-    else if (Notification.permission === 'denied') {
-        notificationsEnabled = false;
-        document.getElementById('notif-toggle').checked = false;
-        localStorage.setItem('notificationsEnabled', 'false');
-    }
-    // Si pas encore demandé, utiliser la valeur sauvegardée
-    else {
-        const enabled = saved === 'true';
-        notificationsEnabled = enabled;
-        document.getElementById('notif-toggle').checked = enabled;
-    }
-    
-    updateNotificationStatus();
-}
-
-function saveNotificationState() {
-    localStorage.setItem('notificationsEnabled', notificationsEnabled);
-}
-
-function loadPrayersState() {
-    const today = new Date().toISOString().split('T')[0];
-    const saved = localStorage.getItem(`prayers-${today}`);
-    if (saved) {
-        try {
-            const completed = JSON.parse(saved);
-            Object.keys(completed).forEach(prayer => {
-                const card = document.querySelector(`[data-prayer="${prayer}"]`);
-                const checkbox = card?.querySelector('.prayer-checkbox');
-                if (checkbox) {
-                    checkbox.checked = completed[prayer];
-                    updatePrayerCard(prayer, completed[prayer]);
-                }
-            });
-        } catch (e) {
-            console.log('Error loading prayers state');
-        }
-    }
-}
-
-function savePrayersState() {
-    const today = new Date().toISOString().split('T')[0];
-    const completed = {};
-    prayerOrder.forEach(prayer => {
-        const checkbox = document.querySelector(`[data-prayer="${prayer}"] .prayer-checkbox`);
-        completed[prayer] = checkbox?.checked || false;
-    });
-    localStorage.setItem(`prayers-${today}`, JSON.stringify(completed));
-}
-
-function updatePrayerCard(prayer, completed) {
-    const card = document.querySelector(`[data-prayer="${prayer}"]`);
-    if (card) {
-        if (completed) {
-            card.classList.add('completed');
-            showToast(`✓ ${prayer} marquée`);
-        } else {
-            card.classList.remove('completed');
-        }
-    }
-}
-
-// ========== NOTIFICATIONS ==========
-async function requestNotificationPermission() {
-    if (!('Notification' in window)) {
-        updateNotificationStatus('Non supporté');
-        return;
-    }
-
-    if (Notification.permission === 'granted') {
-        notificationsEnabled = true;
-        updateNotificationStatus();
-        return;
-    }
-
-    if (Notification.permission !== 'denied') {
-        try {
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                notificationsEnabled = true;
-                saveNotificationState();
-                updateNotificationStatus();
-                showToast('Notifications activées ✓');
-            } else {
-                notificationsEnabled = false;
-                updateNotificationStatus();
-            }
-        } catch (error) {
-            console.error('Erreur permission notification:', error);
-            notificationsEnabled = false;
-            updateNotificationStatus();
-        }
-    }
-}
-
-function updateNotificationStatus() {
-    const statusEl = document.getElementById('notif-status');
-    const toggle = document.getElementById('notif-toggle');
-
-    if (!('Notification' in window)) {
-        statusEl.textContent = 'Non supporté';
-        statusEl.className = 'notification-status status-denied';
-        toggle.disabled = true;
-        toggle.checked = false;
-        return;
-    }
-
-    // Synchroniser avec l'état réel des permissions
-    if (Notification.permission === 'granted') {
-        statusEl.textContent = '✓ Activées';
-        statusEl.className = 'notification-status status-granted';
-        toggle.disabled = false;
-        toggle.checked = true;
-        notificationsEnabled = true;
-    } else if (Notification.permission === 'denied') {
-        statusEl.textContent = '✗ Bloquées (paramètres navigateur)';
-        statusEl.className = 'notification-status status-denied';
-        toggle.disabled = true;
-        toggle.checked = false;
-        notificationsEnabled = false;
-    } else {
-        // Permission par défaut
-        const enabled = localStorage.getItem('notificationsEnabled') === 'true';
-        statusEl.textContent = enabled ? 'Clic pour confirmer' : 'Cliquez pour activer';
-        statusEl.className = 'notification-status';
-        toggle.disabled = false;
-        toggle.checked = enabled;
-        notificationsEnabled = enabled;
-    }
-}
-
-function showNotification(prayerName) {
-    if (!notificationsEnabled || !('Notification' in window) || Notification.permission !== 'granted') {
-        // Fallback: afficher une alerte visuelle
-        if (notificationsEnabled && document.hidden) {
-            showToast(`🕌 ${prayerName} - ${allTimes[prayerName]}`);
-        }
-        return;
-    }
-
-    const title = `⏰ ${prayerName} - ${arabicNames[prayerName]}`;
-    const options = {
-        icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%231a472a" width="100" height="100"/><text x="50" y="75" font-size="50" text-anchor="middle" fill="%23d4af37" font-family="Arial">🕌</text></svg>',
-        badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%231a472a" width="100" height="100"/><text x="50" y="75" font-size="50" text-anchor="middle" fill="%23d4af37" font-family="Arial">🕌</text></svg>',
-        body: `Il est l'heure de la prière - ${allTimes[prayerName]}`,
-        tag: `prayer-${prayerName}`,
-        requireInteraction: true,
-        vibrate: [200, 100, 200],
-        actions: [
-            { action: 'close', title: 'Fermer' }
-        ]
-    };
-
-    try {
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-            navigator.serviceWorker.controller.postMessage({
-                type: 'SHOW_NOTIFICATION',
-                title: title,
-                options: options
-            });
-        } else {
-            new Notification(title, options);
-        }
-        playAdhanChant();
-    } catch (error) {
-        console.error('Erreur notification:', error);
-    }
-}
-
-document.getElementById('city').addEventListener('change', loadTimes);
-
-document.getElementById('notif-toggle').addEventListener('change', async (e) => {
-    if (e.target.checked) {
-        await requestNotificationPermission();
-        if (!notificationsEnabled) {
-            e.target.checked = false;
-        } else {
-            notificationsEnabled = true;
-        }
-    } else {
-        notificationsEnabled = false;
-    }
-    saveNotificationState();
-    updateNotificationStatus();
-});
-
-document.getElementById('sound-toggle').addEventListener('change', (e) => {
-    soundEnabled = e.target.checked;
-    saveSoundState();
-    updateSoundStatus();
-    if (soundEnabled) {
-        showToast('🎵 Son activé');
-        playAdhanChant();
-    } else {
-        showToast('🔇 Son désactivé');
-    }
-});
-
-// Checkboxes prières
-document.querySelectorAll('.prayer-checkbox').forEach(checkbox => {
-    checkbox.addEventListener('change', (e) => {
-        const prayer = e.target.closest('.prayer-card').dataset.prayer;
-        updatePrayerCard(prayer, e.target.checked);
-        savePrayersState();
-    });
-});
-function updateDateTime() {
-    const now = new Date();
-    
-    const dateOpts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const dateStr = now.toLocaleDateString('fr-FR', dateOpts);
-    document.getElementById('date').textContent = dateStr;
-    
-    const timeStr = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('time').textContent = timeStr;
-}
-
-function timeToMinutes(timeStr) {
-    const [h, m] = timeStr.split(':').map(Number);
-    return h * 60 + m;
-}
-
-// ========== PRAYERS LOGIC ==========
-function getNextPrayer() {
-    const now = new Date();
-    const currentMinutes = now.getHours() * 60 + now.getMinutes();
-    
-    let nextPrayer = null;
-    let nextTime = null;
-    let minDiff = Infinity;
-    
-    for (let prayer of prayerOrder) {
-        const prayerMinutes = timeToMinutes(allTimes[prayer]);
-        let diff = prayerMinutes - currentMinutes;
-        
-        if (diff > 0 && diff < minDiff) {
-            minDiff = diff;
-            nextPrayer = prayer;
-            nextTime = allTimes[prayer];
-        }
-    }
-    
-    if (!nextPrayer) {
-        nextPrayer = 'Fajr';
-        nextTime = allTimes['Fajr'];
-    }
-    
-    return { prayer: nextPrayer, time: nextTime, minutesLeft: minDiff };
-}
-
-function updateCountdown() {
-    const next = getNextPrayer();
-    const nextPrayerCard = document.getElementById('next-prayer');
-    
-    if (next.minutesLeft !== Infinity) {
-        nextPrayerCard.style.display = 'block';
-        
-        const hours = Math.floor(next.minutesLeft / 60);
-        const minutes = next.minutesLeft % 60;
-        
-        document.getElementById('next-name').textContent = next.prayer;
-        document.getElementById('next-time').textContent = next.time;
-        document.getElementById('countdown').textContent = 
-            hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
-        
-        document.querySelectorAll('.prayer-card').forEach(card => {
-            card.classList.remove('active');
-        });
-        const activeCard = document.querySelector(`[data-prayer="${next.prayer}"]`);
-        if (activeCard) activeCard.classList.add('active');
-
-        if (minutes === 0 && !notifiedPrayers.has(next.prayer)) {
-            showNotification(next.prayer);
-            notifiedPrayers.add(next.prayer);
-        }
-    }
-}
-
-function resetNotifications() {
-    const now = new Date();
-    if (now.getHours() === 0 && now.getMinutes() === 0) {
-        notifiedPrayers.clear();
-    }
-}
-
-async function loadTimes(retries = 0) {
-    const city = document.getElementById('city').value;
-    const errorDiv = document.getElementById('error-msg');
-    const maxRetries = 2;
-    
-    try {
-        errorDiv.innerHTML = '';
-        
-        const res = await fetch(
-            `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Algeria&method=19`,
-            { 
-                method: 'GET', 
-                mode: 'cors',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }
-        );
-        
-        if (!res.ok) {
-            throw new Error(`Erreur API: ${res.status}`);
-        }
-        
-        const data = await res.json();
-        
-        if (!data || !data.data || !data.data.timings) {
-            throw new Error('Format de données invalide');
-        }
-        
-        const t = data.data.timings;
-        
-        // Valider et formater les horaires
-        const validateTime = (time) => {
-            if (!time || typeof time !== 'string') return '--:--';
-            const match = time.match(/^(\d{1,2}):(\d{2})$/);
-            if (!match) return '--:--';
-            const h = parseInt(match[1]);
-            const m = parseInt(match[2]);
-            if (h < 0 || h > 23 || m < 0 || m > 59) return '--:--';
-            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-        };
-        
-        const newTimes = {
-            Fajr: validateTime(t.Fajr),
-            Dhuhr: validateTime(t.Dhuhr),
-            Asr: validateTime(t.Asr),
-            Maghrib: validateTime(t.Maghrib),
-            Isha: validateTime(t.Isha)
-        };
-        
-        // Vérifier que tous les horaires sont valides
-        const allValid = Object.values(newTimes).every(time => time !== '--:--');
-        
-        if (!allValid) {
-            console.warn('Certains horaires invalides:', newTimes);
-            if (retries < maxRetries) {
-                console.log(`Retry ${retries + 1}/${maxRetries}...`);
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                return loadTimes(retries + 1);
-            }
-            throw new Error('Horaires invalides après retry');
-        }
-        
-        allTimes = newTimes;
-        
-        // Afficher les horaires
-        for (let prayer of prayerOrder) {
-            const elem = document.getElementById(prayer);
-            if (elem) {
-                elem.textContent = allTimes[prayer];
-            }
-        }
-        
-        notifiedPrayers.clear();
-        updateCountdown();
-        saveCity();
-        loadPrayersState();
-        showToast(`✓ ${city} - Horaires chargés`);
-        
-    } catch (error) {
-        console.error('Erreur chargement:', error);
-        
-        if (retries < maxRetries) {
-            console.log(`Retry ${retries + 1}/${maxRetries}...`);
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            return loadTimes(retries + 1);
-        }
-        
-        errorDiv.innerHTML = `<div class="error">⚠️ Erreur: ${error.message}</div>`;
-        
-        // Fallback: horaires par défaut pour Alger
-        if (city === 'Algiers') {
-            allTimes = {
-                Fajr: '05:30',
-                Dhuhr: '12:30',
-                Asr: '15:45',
-                Maghrib: '18:30',
-                Isha: '20:15'
-            };
-            prayerOrder.forEach(prayer => {
-                const elem = document.getElementById(prayer);
-                if (elem) elem.textContent = allTimes[prayer];
-            });
-            showToast('Mode offline - Horaires par défaut');
-        }
-    }
 }
 
 // ========== EVENT LISTENERS ==========
-document.getElementById('city').addEventListener('change', loadTimes);
+document.getElementById('city').addEventListener('change', loadPrayers);
 
-
-document.getElementById('sound-toggle').addEventListener('change', (e) => {
-    soundEnabled = e.target.checked;
-    saveSoundState();
-    updateSoundStatus();
-    if (soundEnabled) {
-        showToast('🎵 Son activé');
-        playAdhanChant();
+document.getElementById('notif-toggle').addEventListener('change', async e => {
+    if (e.target.checked) {
+        await requestNotifPermission();
+        if (!notificationsEnabled) e.target.checked = false;
     } else {
-        showToast('🔇 Son désactivé');
+        notificationsEnabled = false;
+        save('notificationsEnabled', false);
     }
+    updateNotifStatus();
 });
 
-// Checkboxes prières
-document.querySelectorAll('.prayer-checkbox').forEach(checkbox => {
-    checkbox.addEventListener('change', (e) => {
+document.getElementById('sound-toggle').addEventListener('change', e => {
+    soundEnabled = e.target.checked;
+    save('soundEnabled', soundEnabled);
+    document.getElementById('sound-status').textContent = soundEnabled ? '✓ Activé' : '✗ Désactivé';
+});
+
+document.querySelectorAll('.prayer-checkbox').forEach(cb => {
+    cb.addEventListener('change', e => {
         const prayer = e.target.closest('.prayer-card').dataset.prayer;
-        updatePrayerCard(prayer, e.target.checked);
-        savePrayersState();
+        const card = e.target.closest('.prayer-card');
+        if (e.target.checked) {
+            card.classList.add('completed');
+            showToast(`✓ ${prayer}`);
+        } else {
+            card.classList.remove('completed');
+        }
     });
 });
 
 // ========== INITIALIZATION ==========
-setInterval(updateDateTime, 1000);
-setInterval(() => {
-    updateCountdown();
-    resetNotifications();
-}, 60000);
+document.addEventListener('DOMContentLoaded', async () => {
+    // Charger les paramètres
+    const savedCity = load('city', 'Algiers');
+    document.getElementById('city').value = savedCity;
+    
+    notificationsEnabled = load('notificationsEnabled', false);
+    soundEnabled = load('soundEnabled', true);
+    document.getElementById('sound-toggle').checked = soundEnabled;
 
-// Charger toutes les données
-loadSavedCity();
-loadNotificationState();
-loadSoundState();
-loadAdhanType();
-updateDateTime();
+    // Mettre à jour l'UI
+    updateTime();
+    updateNotifStatus();
+    document.getElementById('sound-status').textContent = soundEnabled ? '✓ Activé' : '✗ Désactivé';
 
-// Attendre que le DOM soit prêt pour charger les horaires
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        loadTimes();
-    });
-} else {
-    loadTimes();
-}
-
-if ('Notification' in window) {
-    updateNotificationStatus();
-}
-
-// Vibration support check
-if ('vibrate' in navigator) {
-    console.log('Vibration API supportée');
-}
-
-// Ajouter les event listeners pour Adhan
-if (document.getElementById('adhan-select')) {
-    document.getElementById('adhan-select').addEventListener('change', (e) => {
-        adhanType = e.target.value;
-        localStorage.setItem('adhanType', adhanType);
-        showToast(`🎵 Adhan: ${e.target.options[e.target.selectedIndex].text}`);
-    });
-}
-
-if (document.getElementById('test-adhan-btn')) {
-    document.getElementById('test-adhan-btn').addEventListener('click', () => {
-        if (soundEnabled) {
-            playAdhanChant();
-            showToast('🎧 Écoute l\'Adhan...');
-        } else {
-            showToast('⚠️ Activez le son d\'abord');
-        }
-    });
-}
+    // Charger les horaires
+    await loadPrayers();
+    
+    // Mises à jour en temps réel
+    setInterval(updateTime, 1000);
+    setInterval(updateCountdown, 60000);
+});
 </script>
 
 </body>
