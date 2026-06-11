@@ -1,4 +1,3 @@
-
 const CACHE_NAME = 'adhan-dz-v2';
 const URLS_TO_CACHE = [
   './',
@@ -91,3 +90,4 @@ self.addEventListener('notificationclick', event => {
     })
   );
 });
+
