@@ -900,9 +900,31 @@ function saveCity() {
 
 function loadNotificationState() {
     const saved = localStorage.getItem('notificationsEnabled');
-    const enabled = saved === 'true';
-    document.getElementById('notif-toggle').checked = enabled;
-    notificationsEnabled = enabled;
+    
+    if (!('Notification' in window)) {
+        updateNotificationStatus('Non supporté');
+        return;
+    }
+
+    // Si les permissions sont déjà accordées, activer automatiquement
+    if (Notification.permission === 'granted') {
+        notificationsEnabled = true;
+        document.getElementById('notif-toggle').checked = true;
+        localStorage.setItem('notificationsEnabled', 'true');
+    } 
+    // Si refusées, désactiver
+    else if (Notification.permission === 'denied') {
+        notificationsEnabled = false;
+        document.getElementById('notif-toggle').checked = false;
+        localStorage.setItem('notificationsEnabled', 'false');
+    }
+    // Si pas encore demandé, utiliser la valeur sauvegardée
+    else {
+        const enabled = saved === 'true';
+        notificationsEnabled = enabled;
+        document.getElementById('notif-toggle').checked = enabled;
+    }
+    
     updateNotificationStatus();
 }
 
@@ -993,22 +1015,31 @@ function updateNotificationStatus() {
         statusEl.textContent = 'Non supporté';
         statusEl.className = 'notification-status status-denied';
         toggle.disabled = true;
+        toggle.checked = false;
         return;
     }
 
-    if (Notification.permission === 'granted' && notificationsEnabled) {
+    // Synchroniser avec l'état réel des permissions
+    if (Notification.permission === 'granted') {
         statusEl.textContent = '✓ Activées';
         statusEl.className = 'notification-status status-granted';
+        toggle.disabled = false;
         toggle.checked = true;
+        notificationsEnabled = true;
     } else if (Notification.permission === 'denied') {
-        statusEl.textContent = '✗ Bloquées';
+        statusEl.textContent = '✗ Bloquées (paramètres navigateur)';
         statusEl.className = 'notification-status status-denied';
-        toggle.checked = false;
         toggle.disabled = true;
-    } else {
-        statusEl.textContent = 'Cliquez pour activer';
-        statusEl.className = 'notification-status';
         toggle.checked = false;
+        notificationsEnabled = false;
+    } else {
+        // Permission par défaut
+        const enabled = localStorage.getItem('notificationsEnabled') === 'true';
+        statusEl.textContent = enabled ? 'Clic pour confirmer' : 'Cliquez pour activer';
+        statusEl.className = 'notification-status';
+        toggle.disabled = false;
+        toggle.checked = enabled;
+        notificationsEnabled = enabled;
     }
 }
 
@@ -1166,9 +1197,10 @@ function resetNotifications() {
     }
 }
 
-async function loadTimes() {
+async function loadTimes(retries = 0) {
     const city = document.getElementById('city').value;
     const errorDiv = document.getElementById('error-msg');
+    const maxRetries = 2;
     
     try {
         errorDiv.innerHTML = '';
@@ -1207,7 +1239,7 @@ async function loadTimes() {
             return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
         };
         
-        allTimes = {
+        const newTimes = {
             Fajr: validateTime(t.Fajr),
             Dhuhr: validateTime(t.Dhuhr),
             Asr: validateTime(t.Asr),
@@ -1216,10 +1248,19 @@ async function loadTimes() {
         };
         
         // Vérifier que tous les horaires sont valides
-        const hasInvalidTimes = Object.values(allTimes).some(time => time === '--:--');
-        if (hasInvalidTimes) {
-            console.warn('Certains horaires invalides:', allTimes);
+        const allValid = Object.values(newTimes).every(time => time !== '--:--');
+        
+        if (!allValid) {
+            console.warn('Certains horaires invalides:', newTimes);
+            if (retries < maxRetries) {
+                console.log(`Retry ${retries + 1}/${maxRetries}...`);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                return loadTimes(retries + 1);
+            }
+            throw new Error('Horaires invalides après retry');
         }
+        
+        allTimes = newTimes;
         
         // Afficher les horaires
         for (let prayer of prayerOrder) {
@@ -1233,10 +1274,17 @@ async function loadTimes() {
         updateCountdown();
         saveCity();
         loadPrayersState();
-        showToast(`✓ Horaires chargés pour ${city}`);
+        showToast(`✓ ${city} - Horaires chargés`);
         
     } catch (error) {
         console.error('Erreur chargement:', error);
+        
+        if (retries < maxRetries) {
+            console.log(`Retry ${retries + 1}/${maxRetries}...`);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            return loadTimes(retries + 1);
+        }
+        
         errorDiv.innerHTML = `<div class="error">⚠️ Erreur: ${error.message}</div>`;
         
         // Fallback: horaires par défaut pour Alger
@@ -1252,6 +1300,7 @@ async function loadTimes() {
                 const elem = document.getElementById(prayer);
                 if (elem) elem.textContent = allTimes[prayer];
             });
+            showToast('Mode offline - Horaires par défaut');
         }
     }
 }
@@ -1259,20 +1308,6 @@ async function loadTimes() {
 // ========== EVENT LISTENERS ==========
 document.getElementById('city').addEventListener('change', loadTimes);
 
-document.getElementById('notif-toggle').addEventListener('change', async (e) => {
-    if (e.target.checked) {
-        await requestNotificationPermission();
-        if (!notificationsEnabled) {
-            e.target.checked = false;
-        } else {
-            notificationsEnabled = true;
-        }
-    } else {
-        notificationsEnabled = false;
-    }
-    saveNotificationState();
-    updateNotificationStatus();
-});
 
 document.getElementById('sound-toggle').addEventListener('change', (e) => {
     soundEnabled = e.target.checked;
@@ -1302,12 +1337,21 @@ setInterval(() => {
     resetNotifications();
 }, 60000);
 
+// Charger toutes les données
 loadSavedCity();
 loadNotificationState();
 loadSoundState();
 loadAdhanType();
 updateDateTime();
-loadTimes();
+
+// Attendre que le DOM soit prêt pour charger les horaires
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        loadTimes();
+    });
+} else {
+    loadTimes();
+}
 
 if ('Notification' in window) {
     updateNotificationStatus();
