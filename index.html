@@ -463,29 +463,36 @@ async function loadPrayers() {
 }
 
 function updateCountdown() {
+    if (Object.keys(prayers).length === 0) return;
+    
     const now = new Date();
     const currentMin = now.getHours() * 60 + now.getMinutes();
     
     let nextPrayer = null;
+    let nextTime = null;
     let minDiff = Infinity;
 
+    // Trouver la prochaine prière
     PRAYER_ORDER.forEach(p => {
         const [h, m] = prayers[p].split(':').map(Number);
         const prayerMin = h * 60 + m;
         const diff = prayerMin - currentMin;
-        if (diff > 0 && diff < minDiff) {
+        if (diff >= 0 && diff < minDiff) {  // >= au lieu de >
             minDiff = diff;
             nextPrayer = p;
+            nextTime = prayers[p];
         }
     });
 
+    // Si aucune prière trouvée, Fajr demain
     if (!nextPrayer) {
         nextPrayer = 'Fajr';
-        minDiff = 24 * 60 - currentMin + 5 * 60; // Approximation pour demain
+        nextTime = prayers['Fajr'];
     }
 
+    // Afficher la prochaine prière
     document.getElementById('next-name').textContent = nextPrayer;
-    document.getElementById('next-time').textContent = prayers[nextPrayer];
+    document.getElementById('next-time').textContent = nextTime;
     const hrs = Math.floor(minDiff / 60);
     const mins = minDiff % 60;
     document.getElementById('countdown').textContent = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
@@ -496,11 +503,26 @@ function updateCountdown() {
     const card = document.querySelector(`[data-prayer="${nextPrayer}"]`);
     if (card) card.classList.add('active');
 
-    // Notifier
-    if (minDiff === 0 && !notifiedToday.has(nextPrayer)) {
-        notifiedToday.add(nextPrayer);
-        if (notificationsEnabled) showNotification(nextPrayer);
-        if (soundEnabled) playAdhan();
+    // NOTIFICATION & SON quand c'est la bonne minute
+    if (minDiff === 0) {
+        const todayKey = now.toISOString().split('T')[0];
+        const notificationKey = `notified-${todayKey}`;
+        const alreadyNotified = load(notificationKey, {});
+
+        if (!alreadyNotified[nextPrayer]) {
+            console.log(`🔔 C'est ${nextPrayer}!`);
+            alreadyNotified[nextPrayer] = true;
+            save(notificationKey, alreadyNotified);
+            
+            if (notificationsEnabled) {
+                showNotification(nextPrayer);
+                console.log('✓ Notification');
+            }
+            if (soundEnabled) {
+                playAdhan();
+                console.log('✓ Son');
+            }
+        }
     }
 }
 
@@ -665,7 +687,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Mises à jour en temps réel
     setInterval(updateTime, 1000);
-    setInterval(updateCountdown, 60000);
+    setInterval(updateCountdown, 1000);  // Chaque seconde au lieu de 60000ms
 });
 </script>
 
